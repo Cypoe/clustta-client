@@ -40,6 +40,7 @@ function webAdaptersStub() {
   const VIRTUAL_ID = '\0web-adapters-stub';
   return {
     name: 'web-adapters-stub',
+    enforce: 'pre',
     resolveId(id) {
       if (!isWebMode && (id === '@clustta/web-adapters' || id.startsWith('@clustta/web-adapters/'))) {
         return { id: VIRTUAL_ID, syntheticNamedExports: true };
