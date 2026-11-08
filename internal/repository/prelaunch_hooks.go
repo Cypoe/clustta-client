@@ -29,6 +29,7 @@ var applicationVersionPattern = regexp.MustCompile(`^[0-9]+(?:\.[0-9]+){0,2}$`)
 var SyncableProjectConfigNames = []string{
 	ProjectScriptSettingsConfig,
 	PreLaunchHooksConfig,
+	FiletypePolicyConfig,
 }
 
 type PreLaunchEnvironmentVariable struct {

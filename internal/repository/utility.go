@@ -37,13 +37,14 @@ func StoreFileChunks(tx *sqlx.Tx, filePath string, callback func(int, int, strin
 
 	seenChunks := make(map[string]bool)
 
-	kiB := 1024
-	miB := 1024 * kiB
-
+	_, lane, err := LaneForFile(tx, filePath)
+	if err != nil {
+		return "", err
+	}
 	opts := fastcdc.Options{
-		MinSize:     512 * kiB,
-		AverageSize: 1 * miB,
-		MaxSize:     8 * miB,
+		MinSize:     lane.MinSize,
+		AverageSize: lane.AverageSize,
+		MaxSize:     lane.MaxSize,
 	}
 
 	chunkSequence := make([]string, 0)
