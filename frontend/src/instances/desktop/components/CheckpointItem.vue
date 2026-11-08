@@ -78,6 +78,8 @@
                 v-tooltip="'Edit checkpoint'" :buttonFunction="openEditCheckpoint" />
             <ActionButton v-if="canManageCheckpointTags" :icon="getAppIcon('tag')"
                 v-tooltip="'Manage checkpoint tags'" @click="openCheckpointTagMenu" />
+            <ActionButton :icon="getAppIcon('merge')" v-tooltip="'Compare with another checkpoint'"
+                @click="openDiffModal" />
             <ActionButton v-if="!platformStore.isWeb" :icon="getAppIcon('revert')" v-tooltip="$t('components.checkpointItem.revertToCheckpoint')"
                 @click="revertToVersion(checkpoint.ownerId, checkpoint.checkpoint_id)" />
             <ActionButton v-if="!platformStore.isWeb && !checkpoint.is_downloaded" :icon="getAppIcon('cloud-down')"
@@ -117,6 +119,7 @@ const getAppIcon = (iconName) => {
 };
 // imports
 import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue';
+import emitter from '@/lib/mitt';
 import { useI18n } from 'vue-i18n';
 import utils from '@/services/utils';
 import { generateAvatar } from '@/lib/avatar';
@@ -196,6 +199,14 @@ const openEditCheckpoint = () => {
 const canManageCheckpointTags = computed(() => canActOnAsset('manage_dependencies', assetStore.selectedAsset));
 
 // methods
+const openDiffModal = () => {
+    trayStates.diffContext = {
+        assetId: props.checkpoint.ownerId,
+        checkpointId: props.checkpoint.checkpoint_id,
+    };
+    emitter.emit('view-diff');
+};
+
 const openCheckpointTagMenu = (event) => {
     if (!canManageCheckpointTags.value) return;
     menu.checkpointTagMenuData = { checkpoint: props.checkpoint };

@@ -8,6 +8,8 @@ export {
     AssetDependencyEdge,
     AssetType,
     Checkpoint,
+    CheckpointDiff,
+    CheckpointDiffSide,
     CollectionType,
     DependencyBuildConflict,
     DependencyBuildPlan,

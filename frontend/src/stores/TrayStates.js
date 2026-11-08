@@ -111,6 +111,7 @@ export const useTrayStates = defineStore("useTrayStates", {
     activeModal: null,
 
     shareModalData: null,
+    diffContext: null,
 
     showTraySearch: false,
     showMeta: false,

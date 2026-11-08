@@ -6,6 +6,10 @@
 // @ts-ignore: Unused imports
 import { Create as $Create } from "@wailsio/runtime";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import * as diff$0 from "../../diff/models.js";
+
 /**
  * @typedef {any} Asset
  */
@@ -484,6 +488,203 @@ export class Checkpoint {
 }
 
 /**
+ * CheckpointDiff is the result of diffing two checkpoints of one asset.
+ * Kind picks the render view: "identical", "text" (line hunks), or
+ * "binary" (byte spans). ChunkRegions is always populated for non-identical
+ * diffs — it is the storage delta the chunk store already knows.
+ */
+export class CheckpointDiff {
+    /**
+     * Creates a new CheckpointDiff instance.
+     * @param {Partial<CheckpointDiff>} [$$source = {}] - The source object to create the CheckpointDiff.
+     */
+    constructor($$source = {}) {
+        if (!("kind" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["kind"] = "";
+        }
+        if (!("asset_id" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["asset_id"] = "";
+        }
+        if (!("a" in $$source)) {
+            /**
+             * @member
+             * @type {CheckpointDiffSide}
+             */
+            this["a"] = (new CheckpointDiffSide());
+        }
+        if (!("b" in $$source)) {
+            /**
+             * @member
+             * @type {CheckpointDiffSide}
+             */
+            this["b"] = (new CheckpointDiffSide());
+        }
+        if (!("chunks_total" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["chunks_total"] = 0;
+        }
+        if (!("chunks_shared" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["chunks_shared"] = 0;
+        }
+        if (!("bytes_shared" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["bytes_shared"] = 0;
+        }
+        if (!("regions" in $$source)) {
+            /**
+             * @member
+             * @type {diff$0.Region[]}
+             */
+            this["regions"] = [];
+        }
+        if (/** @type {any} */(false)) {
+            /**
+             * @member
+             * @type {diff$0.LineHunk[] | undefined}
+             */
+            this["line_hunks"] = undefined;
+        }
+        if (/** @type {any} */(false)) {
+            /**
+             * @member
+             * @type {number | undefined}
+             */
+            this["lines_a"] = undefined;
+        }
+        if (/** @type {any} */(false)) {
+            /**
+             * @member
+             * @type {number | undefined}
+             */
+            this["lines_b"] = undefined;
+        }
+        if (/** @type {any} */(false)) {
+            /**
+             * @member
+             * @type {diff$0.ByteSpan[] | undefined}
+             */
+            this["byte_spans"] = undefined;
+        }
+        if (!("truncated" in $$source)) {
+            /**
+             * @member
+             * @type {boolean}
+             */
+            this["truncated"] = false;
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new CheckpointDiff instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {CheckpointDiff}
+     */
+    static createFrom($$source = {}) {
+        const $$createField2_0 = $$createType0;
+        const $$createField3_0 = $$createType0;
+        const $$createField7_0 = $$createType2;
+        const $$createField8_0 = $$createType4;
+        const $$createField11_0 = $$createType6;
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        if ("a" in $$parsedSource) {
+            $$parsedSource["a"] = $$createField2_0($$parsedSource["a"]);
+        }
+        if ("b" in $$parsedSource) {
+            $$parsedSource["b"] = $$createField3_0($$parsedSource["b"]);
+        }
+        if ("regions" in $$parsedSource) {
+            $$parsedSource["regions"] = $$createField7_0($$parsedSource["regions"]);
+        }
+        if ("line_hunks" in $$parsedSource) {
+            $$parsedSource["line_hunks"] = $$createField8_0($$parsedSource["line_hunks"]);
+        }
+        if ("byte_spans" in $$parsedSource) {
+            $$parsedSource["byte_spans"] = $$createField11_0($$parsedSource["byte_spans"]);
+        }
+        return new CheckpointDiff(/** @type {Partial<CheckpointDiff>} */($$parsedSource));
+    }
+}
+
+/**
+ * CheckpointDiffSide describes one endpoint of a checkpoint diff.
+ */
+export class CheckpointDiffSide {
+    /**
+     * Creates a new CheckpointDiffSide instance.
+     * @param {Partial<CheckpointDiffSide>} [$$source = {}] - The source object to create the CheckpointDiffSide.
+     */
+    constructor($$source = {}) {
+        if (!("checkpoint_id" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["checkpoint_id"] = "";
+        }
+        if (!("created_at" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["created_at"] = "";
+        }
+        if (!("comment" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["comment"] = "";
+        }
+        if (!("file_size" in $$source)) {
+            /**
+             * @member
+             * @type {number}
+             */
+            this["file_size"] = 0;
+        }
+        if (!("eol" in $$source)) {
+            /**
+             * @member
+             * @type {string}
+             */
+            this["eol"] = "";
+        }
+
+        Object.assign(this, $$source);
+    }
+
+    /**
+     * Creates a new CheckpointDiffSide instance from a string or object.
+     * @param {any} [$$source = {}]
+     * @returns {CheckpointDiffSide}
+     */
+    static createFrom($$source = {}) {
+        let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        return new CheckpointDiffSide(/** @type {Partial<CheckpointDiffSide>} */($$parsedSource));
+    }
+}
+
+/**
  * @typedef {any} Collection
  */
 
@@ -587,8 +788,8 @@ export class DependencyBuildConflict {
      * @returns {DependencyBuildConflict}
      */
     static createFrom($$source = {}) {
-        const $$createField1_0 = $$createType0;
-        const $$createField2_0 = $$createType1;
+        const $$createField1_0 = $$createType7;
+        const $$createField2_0 = $$createType8;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("checkpoint_ids" in $$parsedSource) {
             $$parsedSource["checkpoint_ids"] = $$createField1_0($$parsedSource["checkpoint_ids"]);
@@ -658,9 +859,9 @@ export class DependencyBuildPlan {
      * @returns {DependencyBuildPlan}
      */
     static createFrom($$source = {}) {
-        const $$createField2_0 = $$createType3;
-        const $$createField3_0 = $$createType0;
-        const $$createField4_0 = $$createType5;
+        const $$createField2_0 = $$createType10;
+        const $$createField3_0 = $$createType7;
+        const $$createField4_0 = $$createType12;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("entries" in $$parsedSource) {
             $$parsedSource["entries"] = $$createField2_0($$parsedSource["entries"]);
@@ -754,7 +955,7 @@ export class DependencyBuildPlanEntry {
      * @returns {DependencyBuildPlanEntry}
      */
     static createFrom($$source = {}) {
-        const $$createField5_0 = $$createType0;
+        const $$createField5_0 = $$createType7;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("resolution_path" in $$parsedSource) {
             $$parsedSource["resolution_path"] = $$createField5_0($$parsedSource["resolution_path"]);
@@ -800,8 +1001,8 @@ export class DependencyBuildResult {
      * @returns {DependencyBuildResult}
      */
     static createFrom($$source = {}) {
-        const $$createField1_0 = $$createType3;
-        const $$createField2_0 = $$createType3;
+        const $$createField1_0 = $$createType10;
+        const $$createField2_0 = $$createType10;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("restored" in $$parsedSource) {
             $$parsedSource["restored"] = $$createField1_0($$parsedSource["restored"]);
@@ -843,8 +1044,8 @@ export class DependencyGraphPlan {
      * @returns {DependencyGraphPlan}
      */
     static createFrom($$source = {}) {
-        const $$createField0_0 = $$createType7;
-        const $$createField1_0 = $$createType5;
+        const $$createField0_0 = $$createType14;
+        const $$createField1_0 = $$createType12;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("entries" in $$parsedSource) {
             $$parsedSource["entries"] = $$createField0_0($$parsedSource["entries"]);
@@ -928,8 +1129,8 @@ export class DependencySelectorOptions {
      * @returns {DependencySelectorOptions}
      */
     static createFrom($$source = {}) {
-        const $$createField0_0 = $$createType9;
-        const $$createField1_0 = $$createType11;
+        const $$createField0_0 = $$createType16;
+        const $$createField1_0 = $$createType18;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("checkpoints" in $$parsedSource) {
             $$parsedSource["checkpoints"] = $$createField0_0($$parsedSource["checkpoints"]);
@@ -1965,7 +2166,7 @@ export class User {
      */
     static createFrom($$source = {}) {
         const $$createField7_0 = $Create.ByteSlice;
-        const $$createField10_0 = $$createType12;
+        const $$createField10_0 = $$createType19;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("photo" in $$parsedSource) {
             $$parsedSource["photo"] = $$createField7_0($$parsedSource["photo"]);
@@ -2042,9 +2243,9 @@ export class Workflow {
      * @returns {Workflow}
      */
     static createFrom($$source = {}) {
-        const $$createField4_0 = $$createType14;
-        const $$createField5_0 = $$createType16;
-        const $$createField6_0 = $$createType18;
+        const $$createField4_0 = $$createType21;
+        const $$createField5_0 = $$createType23;
+        const $$createField6_0 = $$createType25;
         let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
         if ("assets" in $$parsedSource) {
             $$parsedSource["assets"] = $$createField4_0($$parsedSource["assets"]);
@@ -2305,22 +2506,29 @@ export class WorkflowLink {
 }
 
 // Private type creation functions
-const $$createType0 = $Create.Array($Create.Any);
-const $$createType1 = $Create.Array($$createType0);
-const $$createType2 = DependencyBuildPlanEntry.createFrom;
-const $$createType3 = $Create.Array($$createType2);
-const $$createType4 = DependencyBuildConflict.createFrom;
-const $$createType5 = $Create.Array($$createType4);
-const $$createType6 = DependencyGraphPlanEntry.createFrom;
-const $$createType7 = $Create.Array($$createType6);
-const $$createType8 = Checkpoint.createFrom;
-const $$createType9 = $Create.Array($$createType8);
-const $$createType10 = AssetCheckpointTag.createFrom;
-const $$createType11 = $Create.Array($$createType10);
-const $$createType12 = Role.createFrom;
-const $$createType13 = WorkflowAsset.createFrom;
+const $$createType0 = CheckpointDiffSide.createFrom;
+const $$createType1 = diff$0.Region.createFrom;
+const $$createType2 = $Create.Array($$createType1);
+const $$createType3 = diff$0.LineHunk.createFrom;
+const $$createType4 = $Create.Array($$createType3);
+const $$createType5 = diff$0.ByteSpan.createFrom;
+const $$createType6 = $Create.Array($$createType5);
+const $$createType7 = $Create.Array($Create.Any);
+const $$createType8 = $Create.Array($$createType7);
+const $$createType9 = DependencyBuildPlanEntry.createFrom;
+const $$createType10 = $Create.Array($$createType9);
+const $$createType11 = DependencyBuildConflict.createFrom;
+const $$createType12 = $Create.Array($$createType11);
+const $$createType13 = DependencyGraphPlanEntry.createFrom;
 const $$createType14 = $Create.Array($$createType13);
-const $$createType15 = WorkflowCollection.createFrom;
+const $$createType15 = Checkpoint.createFrom;
 const $$createType16 = $Create.Array($$createType15);
-const $$createType17 = WorkflowLink.createFrom;
+const $$createType17 = AssetCheckpointTag.createFrom;
 const $$createType18 = $Create.Array($$createType17);
+const $$createType19 = Role.createFrom;
+const $$createType20 = WorkflowAsset.createFrom;
+const $$createType21 = $Create.Array($$createType20);
+const $$createType22 = WorkflowCollection.createFrom;
+const $$createType23 = $Create.Array($$createType22);
+const $$createType24 = WorkflowLink.createFrom;
+const $$createType25 = $Create.Array($$createType24);

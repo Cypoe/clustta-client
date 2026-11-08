@@ -143,6 +143,22 @@ export function DeleteCheckpointTag(projectPath, tagId) {
 }
 
 /**
+ * DiffCheckpoints diffs two checkpoints of the same asset. The chunk
+ * sequences alone determine the storage delta (shared vs changed regions);
+ * reconstructed content refines it into line hunks for text or byte spans
+ * for binary. Missing chunks fail loudly — sync first.
+ * @param {string} projectPath
+ * @param {string} checkpointIdA
+ * @param {string} checkpointIdB
+ * @returns {$CancellablePromise<models$0.CheckpointDiff>}
+ */
+export function DiffCheckpoints(projectPath, checkpointIdA, checkpointIdB) {
+    return $Call.ByID(2378843777, projectPath, checkpointIdA, checkpointIdB).then(/** @type {($result: any) => any} */(($result) => {
+        return $$createType3($result);
+    }));
+}
+
+/**
  * ExecuteDependencyBuildPlan queues and restores a revalidated exact-checkpoint plan.
  * @param {string} projectPath
  * @param {string} remoteUrl
@@ -153,7 +169,7 @@ export function DeleteCheckpointTag(projectPath, tagId) {
  */
 export function ExecuteDependencyBuildPlan(projectPath, remoteUrl, rootAssetId, expectedFingerprint, allowModified) {
     return $Call.ByID(2431386892, projectPath, remoteUrl, rootAssetId, expectedFingerprint, allowModified).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType3($result);
+        return $$createType4($result);
     }));
 }
 
@@ -177,7 +193,7 @@ export function GetCheckpoint(projectPath, checkpointId) {
  */
 export function GetCheckpointDependencyReferenceCounts(projectPath, assetId) {
     return $Call.ByID(629976125, projectPath, assetId).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType4($result);
+        return $$createType5($result);
     }));
 }
 
@@ -189,7 +205,7 @@ export function GetCheckpointDependencyReferenceCounts(projectPath, assetId) {
  */
 export function GetCheckpointTags(projectPath, assetId) {
     return $Call.ByID(992419540, projectPath, assetId).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType6($result);
+        return $$createType7($result);
     }));
 }
 
@@ -227,7 +243,7 @@ export function GetLatestCheckpoint(projectPath, assetId) {
  */
 export function GetTimeline(projectPath) {
     return $Call.ByID(3258604816, projectPath).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType8($result);
+        return $$createType9($result);
     }));
 }
 
@@ -252,7 +268,7 @@ export function ResolveCheckpointSource(projectPath, assetId, checkpointId) {
  */
 export function Revert(projectPath, remoteUrl, assetIds) {
     return $Call.ByID(3999685591, projectPath, remoteUrl, assetIds).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType9($result);
+        return $$createType10($result);
     }));
 }
 
@@ -300,7 +316,7 @@ export function RevertToCheckpoint(projectPath, remoteUrl, assetId, checkpointId
  */
 export function RevertUnmodified(projectPath, remoteUrl, assetIds) {
     return $Call.ByID(2347537687, projectPath, remoteUrl, assetIds).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType9($result);
+        return $$createType10($result);
     }));
 }
 
@@ -314,7 +330,7 @@ export function RevertUnmodified(projectPath, remoteUrl, assetIds) {
  */
 export function SetCheckpointTag(projectPath, tagId, name, checkpointId) {
     return $Call.ByID(4000678219, projectPath, tagId, name, checkpointId).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType5($result);
+        return $$createType6($result);
     }));
 }
 
@@ -327,7 +343,7 @@ export function SetCheckpointTag(projectPath, tagId, name, checkpointId) {
  */
 export function SetCheckpointTagsForGroup(projectPath, name, groupId) {
     return $Call.ByID(2098049918, projectPath, name, groupId).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType6($result);
+        return $$createType7($result);
     }));
 }
 
@@ -378,10 +394,11 @@ export function ViewCheckpoint(projectPath, checkpointId, assetId, collectionNam
 const $$createType0 = models$0.Checkpoint.createFrom;
 const $$createType1 = $Create.Array($$createType0);
 const $$createType2 = $Create.Array($Create.Any);
-const $$createType3 = models$0.DependencyBuildResult.createFrom;
-const $$createType4 = $Create.Map($Create.Any, $Create.Any);
-const $$createType5 = models$0.AssetCheckpointTag.createFrom;
-const $$createType6 = $Create.Array($$createType5);
-const $$createType7 = repository$0.CompatTimeline.createFrom;
-const $$createType8 = $Create.Array($$createType7);
-const $$createType9 = $models.FetchResult.createFrom;
+const $$createType3 = models$0.CheckpointDiff.createFrom;
+const $$createType4 = models$0.DependencyBuildResult.createFrom;
+const $$createType5 = $Create.Map($Create.Any, $Create.Any);
+const $$createType6 = models$0.AssetCheckpointTag.createFrom;
+const $$createType7 = $Create.Array($$createType6);
+const $$createType8 = repository$0.CompatTimeline.createFrom;
+const $$createType9 = $Create.Array($$createType8);
+const $$createType10 = $models.FetchResult.createFrom;

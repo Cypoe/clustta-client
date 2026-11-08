@@ -1386,7 +1386,14 @@
     "dependenciesTab": "Dependencies",
     "consoleTab": "Console",
     "changesTab": "Changes",
-    "collaboratorsTab": "Collaborators"
+    "collaboratorsTab": "Collaborators",
+    "diffTab": "Diff",
+    "diffSelectCheckpoint": "Expand a checkpoint to see what changed",
+    "diffPrevious": "previous…",
+    "diffChunksShared": "chunks shared",
+    "diffIdentical": "no differences",
+    "diffNoLineChanges": "no line differences (metadata/eol only)",
+    "diffLoadFailed": "Failed to load checkpoints"
   },
   "blocks": {
     "dragIntoOtherApp": "Drag into other application",

@@ -1,8 +1,10 @@
 <template>
-  <div ref="detailsPaneRoot" class="details-pane-root" v-stop-propagation>
+  <div ref="detailsPaneRoot" class="details-pane-root" v-stop-propagation v-stop-propagation:contextmenu
+      :style="{ position: 'relative', width: panes.detailPaneWidth + 'px', maxWidth: detailMaxWidth + 'px', minWidth: '400px', flexBasis: panes.detailPaneWidth + 'px', flexGrow: 0, flexShrink: 0 }">
+    <div class="pane-resize-handle" @mousedown="startPaneResize"></div>
 
 
-    <div class="details-pane-inner">
+    <div class="details-pane-inner" :style="{ maxWidth: 'none' }">
       <div v-if="isMultipleItems" class="details-pane-content">
 
         <div v-if="itemsIsCollection" class="pane-parameter-detail">
@@ -138,6 +140,7 @@ import Clipboard from '@/instances/desktop/components/Clipboard.vue';
 import CollaboratorSuggestions from '@/instances/common/components/CollaboratorSuggestions.vue';
 import Collaborators from "@/instances/desktop/panes/Collaborators.vue";
 import CollectionDetails from "@/instances/desktop/panes/CollectionDetails.vue";
+import CheckpointDiff from "@/instances/desktop/panes/CheckpointDiff.vue";
 import Console from "@/instances/desktop/panes/Console.vue";
 import Dependencies from "@/instances/desktop/panes/Dependencies.vue";
 import DropDownBox from '@/instances/common/components/DropDownBox.vue';
@@ -193,6 +196,7 @@ const placeholder = computed(() => t('components.detailsPane.searchCollaborators
 const assetDetailPanes = [
   { name: "Details", nameKey: "panes.detailsTab", tab_name: "assetDetails", icon: "info" },
   { name: "Checkpoints", nameKey: "panes.checkpointsTab", tab_name: "checkpoints", icon: "checkpoint-stone" },
+  { name: "Diff", nameKey: "panes.diffTab", tab_name: "diff", icon: "merge" },
   { name: "Dependencies", nameKey: "panes.dependenciesTab", tab_name: "dependencies", icon: "dependency" },
   { name: "Console", nameKey: "panes.consoleTab", tab_name: "console", icon: "console" },
 ];
@@ -215,6 +219,7 @@ const paneComponents = {
   collectionDetails: CollectionDetails,
   console: Console,
   dependencies: Dependencies,
+  diff: CheckpointDiff,
   projectCheckpoints: ProjectCheckpoints,
   projectDetails: ProjectDetails,
   untrackedItemDetails: UntrackedItemDetails
@@ -1017,6 +1022,46 @@ const viewDependencies = () => filterList('Dependencies');
 // Switches to the changes tab.
 const viewChanges = () => filterList('Changes');
 
+// Switches to the checkpoint diff tab.
+const viewDiff = () => filterList('Diff');
+
+// The pane may never grow past the stage minus the file browser column's own
+// min-width + flex gap, so measure the sibling rather than guess.
+const detailMaxWidth = ref(480);
+const updateDetailMaxWidth = () => {
+  const parent = detailsPaneRoot.value?.parentElement;
+  if (!parent) { detailMaxWidth.value = 480; return; }
+  const leftCol = parent.querySelector(':scope > .left-column');
+  const reserve = leftCol ? (parseFloat(getComputedStyle(leftCol).minWidth) || 0) : 320;
+  const gap = parseFloat(getComputedStyle(parent).gap) || 0;
+  detailMaxWidth.value = Math.max(400, parent.clientWidth - reserve - gap);
+};
+
+// Clamp the stored width if the stage shrinks (window resize).
+watch(detailMaxWidth, (max) => {
+  if (panes.detailPaneWidth > max) panes.detailPaneWidth = max;
+});
+
+// Drag-resize the details pane; the default width is the minimum and the
+// pane may never grow past the stage minus the file browser's minimum.
+const startPaneResize = (e) => {
+  e.preventDefault();
+  const startX = e.clientX;
+  const startWidth = panes.detailPaneWidth;
+  const onMove = (ev) => {
+    panes.detailPaneWidth = Math.min(
+      Math.max(startWidth + (startX - ev.clientX), 400),
+      detailMaxWidth.value
+    );
+  };
+  const onUp = () => {
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onUp);
+  };
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+};
+
 // watchers
 watch(() => settingsItems.value, (newItems) => {
   if (!newItems.length) return;
@@ -1042,6 +1087,9 @@ onMounted(() => {
   emitter.on('view-checkpoints', viewCheckpoints);
   emitter.on('view-dependencies', viewDependencies);
   emitter.on('view-changelog', viewChanges);
+  emitter.on('view-diff', viewDiff);
+  updateDetailMaxWidth();
+  window.addEventListener('resize', updateDetailMaxWidth);
 });
 
 onUnmounted(() => {
@@ -1049,6 +1097,8 @@ onUnmounted(() => {
   emitter.off('view-checkpoints', viewCheckpoints);
   emitter.off('view-dependencies', viewDependencies);
   emitter.off('view-changelog', viewChanges);
+  emitter.off('view-diff', viewDiff);
+  window.removeEventListener('resize', updateDetailMaxWidth);
 });
 </script>
 
@@ -1134,5 +1184,20 @@ onUnmounted(() => {
   justify-content: flex-end;
   flex-direction: column;
   gap: .5rem;
+}
+
+
+.pane-resize-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: ew-resize;
+  z-index: 10;
+  border-radius: 3px;
+}
+.pane-resize-handle:hover {
+  background: var(--border-strong, rgba(255,255,255,.2));
 }
 </style>

@@ -88,9 +88,16 @@ const updateSearch = () => {
   });
 };
 
-// Updates the expanded checkpoint ID.
+// Updates the expanded checkpoint ID and publishes it as the diff context —
+// expanding a checkpoint means "show me what changed in it".
 const updateExpanded = (checkpointId) => {
   expandedId.value = checkpointId;
+  if (checkpointId) {
+    trayStates.diffContext = {
+      assetId: assetStore.selectedAsset?.id,
+      checkpointId,
+    };
+  }
 };
 
 // Returns the group key label for a given checkpoint date.
